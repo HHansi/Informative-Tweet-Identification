@@ -1,14 +1,14 @@
-numpy==1.18.1
-pandas==0.25.3
-# spacy==2.2.3
-scikit-learn==0.22.1
-scipy==1.4.1
-torch==1.5.1
-torchtext==0.5.0
-tqdm==4.41.1
+# numpy==1.18.1
+# pandas==0.25.3
+# scikit-learn==0.22.1
+# scipy==1.4.1
+# torch==1.5.1
+# windows - pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# linux - pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# torchtext==0.5.0
+# tqdm==4.41.1
 transformers==2.3.0
 wandb==0.8.21
 tensorboardX==2.0
-seaborn==0.9.0
-wordcloud==1.6.0
+# seaborn==0.9.0
 pyyaml==5.3.1
