@@ -101,6 +101,7 @@ else:
     dev['predictions'] = predictions
 
 dev['predictions'] = decode(dev['predictions'])
+dev['class'] = decode(dev['class'])
 
 logging.info("Started Evaluation")
 results = evaluatation_scores(dev, 'class', 'predictions', labels, pos_label)
