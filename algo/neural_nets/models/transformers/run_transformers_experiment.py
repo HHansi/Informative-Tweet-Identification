@@ -80,6 +80,7 @@ dev_preds = np.zeros((len(dev), english_args["n_fold"]))
 
 if english_args["evaluate_during_training"]:
     for i in range(english_args["n_fold"]):
+        logging.info("Started Fold {}".format(i))
         train, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
         model.train_model(train, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
         model = ClassificationModel(MODEL_TYPE, english_args["best_model_dir"], args=english_args,
@@ -87,11 +88,12 @@ if english_args["evaluate_during_training"]:
 
         predictions, raw_outputs = model.predict(dev_sentences)
         dev_preds[:, i] = predictions
+        logging.info("Completed Fold {}".format(i))
     # select majority class of each instance (row)
     final_predictions = []
     for row in dev_preds:
         row = row.tolist()
-        final_predictions.append(max(set(row), key=row.count))
+        final_predictions.append(int(max(set(row), key=row.count)))
     dev['predictions'] = final_predictions
 else:
     model.train_model(train, f1=f1, accuracy=sklearn.metrics.accuracy_score)
