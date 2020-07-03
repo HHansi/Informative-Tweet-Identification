@@ -4,6 +4,7 @@ TEMP_DIRECTORY = "temp/data"
 TRAIN_FILE = "train.tsv"
 TEST_FILE = "test.tsv"
 DEV_RESULT_FILE = "dev_result.tsv"
+DEV_EVAL_FILE = 'dev_eval.txt'
 RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
@@ -31,6 +32,7 @@ english_args = {
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
     'do_lower_case': False,
+    'n_fold': 5,
 
     'logging_steps': 50,
     'save_steps': 100,
