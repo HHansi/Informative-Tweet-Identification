@@ -34,12 +34,12 @@ english_args = {
     'do_lower_case': False,
     'n_fold': 5,
 
-    'logging_steps': 50,
-    'save_steps': 100,
+    'logging_steps': 20,
+    'save_steps': 20,
     "no_cache": False,
     'save_model_every_epoch': True,
     'evaluate_during_training': True,
-    'evaluate_during_training_steps': 100,
+    'evaluate_during_training_steps': 20,
     "evaluate_during_training_verbose": True,
     'use_cached_eval_features': False,
     'save_eval_checkpoints': True,
@@ -57,6 +57,6 @@ english_args = {
     'wandb_kwargs': {},
 
     "use_early_stopping": True,
-    "early_stopping_patience": 100,
+    "early_stopping_patience": 10,
     "early_stopping_delta": 0,
 }
