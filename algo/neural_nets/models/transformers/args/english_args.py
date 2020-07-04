@@ -9,7 +9,7 @@ RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
-MODEL_NAME = "bert-base-cased"
+MODEL_NAME = "bert-large-cased"
 HASOC_TRANSFER_LEARNING = False
 USE_DISTANT_LEARNING = False
 
@@ -21,7 +21,7 @@ english_args = {
     'fp16': False,
     'fp16_opt_level': 'O1',
     'max_seq_length': 128,
-    'train_batch_size': 32,
+    'train_batch_size': 8,
     'gradient_accumulation_steps': 1,
     'eval_batch_size': 8,
     'num_train_epochs': 3,
@@ -34,12 +34,12 @@ english_args = {
     'do_lower_case': False,
     'n_fold': 5,
 
-    'logging_steps': 20,
-    'save_steps': 20,
+    'logging_steps': 80,
+    'save_steps': 80,
     "no_cache": False,
     'save_model_every_epoch': True,
     'evaluate_during_training': True,
-    'evaluate_during_training_steps': 20,
+    'evaluate_during_training_steps': 80,
     "evaluate_during_training_verbose": True,
     'use_cached_eval_features': False,
     'save_eval_checkpoints': True,
