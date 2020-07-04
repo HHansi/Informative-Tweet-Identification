@@ -2,26 +2,22 @@ import logging
 import os
 import shutil
 
+import numpy as np
 import pandas as pd
 import sklearn
 import torch
-import numpy as np
-
-from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-
-from algo.neural_nets.models.transformers.common.data_converter import encode, decode
-from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
-from util.logginghandler import TQDMLoggingHandler
 
 from algo.neural_nets.common.preprocessor import transformer_pipeline
-from algo.neural_nets.models.transformers.args.english_args import TEMP_DIRECTORY, RESULT_FILE, MODEL_TYPE, MODEL_NAME, \
-    english_args, HASOC_TRANSFER_LEARNING, USE_DISTANT_LEARNING, DEV_RESULT_FILE, SUBMISSION_FOLDER, SUBMISSION_FILE, \
-    DEV_EVAL_FILE
+from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
+from algo.neural_nets.models.transformers.args.english_args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
+    english_args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE
+from algo.neural_nets.models.transformers.common.data_converter import encode, decode
+from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
 from project_config import SEED, TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
     ACCURACY
+from util.logginghandler import TQDMLoggingHandler
 
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -53,34 +49,20 @@ dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x))
 # test['text'] = test["Label"]
 # test['text'] = test['text'].apply(lambda x: transformer_pipeline(x))
 
-# Create a ClassificationModel
-if HASOC_TRANSFER_LEARNING:
-    print()
-# logging.info("Started HASOC Transfer Learning")
-# model_dir = run_hasoc_experiment()
-# model = ClassificationModel(MODEL_TYPE, model_dir, args=english_args,
-#                             use_cuda=torch.cuda.is_available())
-
-elif USE_DISTANT_LEARNING:
-    print()
-# logging.info("Started Distant Transfer Learning")
-# model_dir = run_transfer_learning_experiment()
-# model = ClassificationModel(MODEL_TYPE, model_dir, args=english_args,
-#                             use_cuda=torch.cuda.is_available())
-
-else:
-    model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=english_args,
-                                use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
+model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=english_args,
+                            use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
 
 # Train the model
-logging.info("Started Training")
+print("Started Training")
 
 dev_sentences = dev['text'].tolist()
 dev_preds = np.zeros((len(dev), english_args["n_fold"]))
 
 if english_args["evaluate_during_training"]:
     for i in range(english_args["n_fold"]):
-        logging.info("Started Fold {}".format(i))
+        if os.path.exists(english_args['output_dir']) and os.path.isdir(english_args['output_dir']):
+            shutil.rmtree(english_args['output_dir'])
+        print("Started Fold {}".format(i))
         train, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
         model.train_model(train, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
         model = ClassificationModel(MODEL_TYPE, english_args["best_model_dir"], args=english_args,
@@ -88,7 +70,7 @@ if english_args["evaluate_during_training"]:
 
         predictions, raw_outputs = model.predict(dev_sentences)
         dev_preds[:, i] = predictions
-        logging.info("Completed Fold {}".format(i))
+        print("Completed Fold {}".format(i))
     # select majority class of each instance (row)
     final_predictions = []
     for row in dev_preds:
@@ -103,19 +85,19 @@ else:
 dev['predictions'] = decode(dev['predictions'])
 dev['class'] = decode(dev['class'])
 
-logging.info("Started Evaluation")
+print("Started Evaluation")
 results = evaluatation_scores(dev, 'class', 'predictions', labels, pos_label)
 
-logging.info("Confusion Matrix {}".format(results[CONFUSION_MATRIX]))
-logging.info("Accuracy {}".format(results[ACCURACY]))
-logging.info("F1 {}".format(results[F1]))
-logging.info("Recall {}".format(results[RECALL]))
-logging.info("Precision {}".format(results[PRECISION]))
+print("Confusion Matrix {}".format(results[CONFUSION_MATRIX]))
+print("Accuracy {}".format(results[ACCURACY]))
+print("F1 {}".format(results[F1]))
+print("Recall {}".format(results[RECALL]))
+print("Precision {}".format(results[PRECISION]))
 
 dev.to_csv(os.path.join(TEMP_DIRECTORY, DEV_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
 save_eval_results(results, os.path.join(TEMP_DIRECTORY, DEV_EVAL_FILE))
 
-logging.info("Finished Evaluation")
+print("Finished Evaluation")
 
 # logging.info("Started Testing")
 # test_sentences = test['text'].tolist()
@@ -136,5 +118,3 @@ logging.info("Finished Evaluation")
 #                     os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER))
 #
 # logging.info("Finished Testing")
-
-
