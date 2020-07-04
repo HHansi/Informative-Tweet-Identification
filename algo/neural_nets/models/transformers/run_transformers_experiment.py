@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+import time
 
 import numpy as np
 import pandas as pd
@@ -84,6 +85,8 @@ else:
 
 dev['predictions'] = decode(dev['predictions'])
 dev['class'] = decode(dev['class'])
+
+time.sleep(5)
 
 print("Started Evaluation")
 results = evaluatation_scores(dev, 'class', 'predictions', labels, pos_label)
