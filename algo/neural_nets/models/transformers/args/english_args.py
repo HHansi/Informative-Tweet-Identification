@@ -9,7 +9,7 @@ RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
-MODEL_NAME = "bert-large-cased"
+MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
 HASOC_TRANSFER_LEARNING = False
 USE_DISTANT_LEARNING = False
 
