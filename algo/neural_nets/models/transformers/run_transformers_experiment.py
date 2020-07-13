@@ -11,8 +11,8 @@ from sklearn.model_selection import train_test_split
 
 from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
-from algo.neural_nets.models.transformers.args.english_args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
-    english_args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE
+from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
+    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
@@ -50,23 +50,23 @@ dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x))
 # test['text'] = test["Label"]
 # test['text'] = test['text'].apply(lambda x: transformer_pipeline(x))
 
-model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=english_args,
+model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
                             use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
 
 # Train the model
 print("Started Training")
 
 dev_sentences = dev['text'].tolist()
-dev_preds = np.zeros((len(dev), english_args["n_fold"]))
+dev_preds = np.zeros((len(dev), args["n_fold"]))
 
-if english_args["evaluate_during_training"]:
-    for i in range(english_args["n_fold"]):
-        if os.path.exists(english_args['output_dir']) and os.path.isdir(english_args['output_dir']):
-            shutil.rmtree(english_args['output_dir'])
+if args["evaluate_during_training"]:
+    for i in range(args["n_fold"]):
+        if os.path.exists(args['output_dir']) and os.path.isdir(args['output_dir']):
+            shutil.rmtree(args['output_dir'])
         print("Started Fold {}".format(i))
         train, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
         model.train_model(train, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
-        model = ClassificationModel(MODEL_TYPE, english_args["best_model_dir"], args=english_args,
+        model = ClassificationModel(MODEL_TYPE, args["best_model_dir"], args=args,
                                     use_cuda=torch.cuda.is_available())
 
         predictions, raw_outputs = model.predict(dev_sentences)

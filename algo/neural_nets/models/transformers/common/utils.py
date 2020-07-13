@@ -340,3 +340,12 @@ def _truncate_seq_pair(tokens_a, tokens_b, max_length):
             tokens_a.pop()
         else:
             tokens_b.pop()
+
+
+def tokenize_text(data_df, tokenizer):
+    max_token_length = 0
+    for text in data_df:
+        tokens = tokenizer.tokenize(text)
+        if len(tokens) > max_token_length:
+            max_token_length = len(tokens)
+    return max_token_length
