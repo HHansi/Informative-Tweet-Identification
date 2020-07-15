@@ -23,13 +23,14 @@ from torch.utils.data import (
     TensorDataset
 )
 from tqdm.auto import trange, tqdm
-from transformers import AdamW, get_linear_schedule_with_warmup
+from transformers import AdamW, get_linear_schedule_with_warmup, XLNetConfig, XLNetTokenizer
 from transformers import (
     BertConfig, BertTokenizer,
 )
 
 from algo.neural_nets.models.transformers.common.utils import InputExample, convert_examples_to_features
 from algo.neural_nets.models.transformers.models.bert_model import BertForSequenceClassification
+from algo.neural_nets.models.transformers.models.xlnet_model import XLNetForSequenceClassification
 
 
 class ClassificationModel:
@@ -54,7 +55,7 @@ class ClassificationModel:
 
         MODEL_CLASSES = {
             "bert": (BertConfig, BertForSequenceClassification, BertTokenizer),
-            # "xlnet": (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
+            "xlnet": (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
             # "xlm": (XLMConfig, XLMForSequenceClassification, XLMTokenizer),
             # "roberta": (RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer,),
             # "distilbert": (DistilBertConfig, DistilBertForSequenceClassification, DistilBertTokenizer,),

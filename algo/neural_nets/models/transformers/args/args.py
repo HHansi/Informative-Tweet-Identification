@@ -13,6 +13,8 @@ MODEL_NAME = "bert-large-cased"
 HASOC_TRANSFER_LEARNING = False
 USE_DISTANT_LEARNING = False
 
+# training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
+
 args = {
     'output_dir': 'temp/outputs/',
     "best_model_dir": "temp/outputs/best_model",
