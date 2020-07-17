@@ -3,6 +3,7 @@ import os
 import sys
 from dataclasses import dataclass, field, asdict
 from multiprocessing import cpu_count
+from torch.utils.data import Dataset
 
 
 def get_default_process_count():
