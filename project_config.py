@@ -1,5 +1,4 @@
 # Created by Hansi at 6/30/2020
-SEED = 77
 
 LABELS = 'labels'
 POS_LABEL = 'positive_label'

@@ -12,18 +12,13 @@ from sklearn.model_selection import train_test_split
 from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
-    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE
+    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
-from project_config import SEED, TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
+from project_config import TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
     ACCURACY
-from util.logginghandler import TQDMLoggingHandler
 
-logging.basicConfig(format='%(asctime)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    level=logging.INFO,
-                    handlers=[TQDMLoggingHandler()])
 
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
@@ -102,22 +97,3 @@ save_eval_results(results, os.path.join(TEMP_DIRECTORY, DEV_EVAL_FILE))
 
 print("Finished Evaluation")
 
-# logging.info("Started Testing")
-# test_sentences = test['text'].tolist()
-#
-# if english_args["evaluate_during_training"]:
-#     model = ClassificationModel(MODEL_TYPE, english_args["best_model_dir"], args=english_args,
-#                                 use_cuda=torch.cuda.is_available())
-#
-# test_predictions, raw_outputs = model.predict(test_sentences)
-#
-# test['Label'] = le.inverse_transform(test_predictions)
-#
-# test = test[['id', 'Label']]
-# test.to_csv(os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER, RESULT_FILE), header=False, sep=',', index=False,
-#             encoding='utf-8')
-#
-# shutil.make_archive(os.path.join(TEMP_DIRECTORY, SUBMISSION_FILE), 'zip',
-#                     os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER))
-#
-# logging.info("Finished Testing")
