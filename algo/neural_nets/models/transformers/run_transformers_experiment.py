@@ -45,6 +45,8 @@ dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x))
 # test['text'] = test["Label"]
 # test['text'] = test['text'].apply(lambda x: transformer_pipeline(x))
 
+
+
 model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
                             use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
 
