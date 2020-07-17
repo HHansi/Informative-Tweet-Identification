@@ -91,7 +91,7 @@ language_modeling_args = {
     'train_batch_size': 8,
     'gradient_accumulation_steps': 1,
     'eval_batch_size': 8,
-    'num_train_epochs': 3,
+    'num_train_epochs': 2,
     'weight_decay': 0,
     'learning_rate': 1e-5,
     'adam_epsilon': 1e-8,
@@ -99,7 +99,6 @@ language_modeling_args = {
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
     'do_lower_case': False,
-    'n_fold': 5,
 
     'logging_steps': 80,
     'save_steps': 80,

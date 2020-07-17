@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
-    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE
+    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE, language_modeling_args
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
@@ -61,10 +61,11 @@ if LANGUAGE_FINETUNE:
         for item in lm_test:
             f.write("%s\n" % item)
 
-    model = LanguageModelingModel(MODEL_TYPE, MODEL_NAME, args=train_args)
+    model = LanguageModelingModel(MODEL_TYPE, MODEL_NAME, args=language_modeling_args)
 
     model.train_model(os.path.join(TEMP_DIRECTORY, "lm_train.txt"), eval_file=os.path.join(TEMP_DIRECTORY, "lm_test.txt"))
 
+    MODEL_NAME = language_modeling_args["best_model_dir"]
 
 
 model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
