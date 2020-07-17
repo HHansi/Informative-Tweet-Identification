@@ -102,22 +102,3 @@ save_eval_results(results, os.path.join(TEMP_DIRECTORY, DEV_EVAL_FILE))
 
 print("Finished Evaluation")
 
-# logging.info("Started Testing")
-# test_sentences = test['text'].tolist()
-#
-# if english_args["evaluate_during_training"]:
-#     model = ClassificationModel(MODEL_TYPE, english_args["best_model_dir"], args=english_args,
-#                                 use_cuda=torch.cuda.is_available())
-#
-# test_predictions, raw_outputs = model.predict(test_sentences)
-#
-# test['Label'] = le.inverse_transform(test_predictions)
-#
-# test = test[['id', 'Label']]
-# test.to_csv(os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER, RESULT_FILE), header=False, sep=',', index=False,
-#             encoding='utf-8')
-#
-# shutil.make_archive(os.path.join(TEMP_DIRECTORY, SUBMISSION_FILE), 'zip',
-#                     os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER))
-#
-# logging.info("Finished Testing")
