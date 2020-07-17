@@ -18,12 +18,7 @@ from algo.neural_nets.models.transformers.common.evaluation import f1, labels, p
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
 from project_config import SEED, TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
     ACCURACY
-from util.logginghandler import TQDMLoggingHandler
 
-logging.basicConfig(format='%(asctime)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    level=logging.INFO,
-                    handlers=[TQDMLoggingHandler()])
 
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)

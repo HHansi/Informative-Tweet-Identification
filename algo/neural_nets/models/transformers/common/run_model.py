@@ -42,6 +42,7 @@ from transformers import (
     get_linear_schedule_with_warmup
 )
 
+from algo.neural_nets.models.transformers.args.model_args import ClassificationArgs
 from algo.neural_nets.models.transformers.common.utils import LazyClassificationDataset, InputExample, \
     convert_examples_to_features
 from algo.neural_nets.models.transformers.models.bert_model import BertForSequenceClassification
@@ -57,7 +58,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class QuestModel:
+class ClassificationModel:
     def __init__(
         self, model_type, model_name, num_labels=None, weight=None, args=None, use_cuda=True, cuda_device=-1, **kwargs,
     ):
