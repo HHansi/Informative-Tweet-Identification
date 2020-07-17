@@ -50,8 +50,8 @@ if LANGUAGE_FINETUNE:
     train_list = train['text'].tolist()
     dev_list = dev['text'].tolist()
     complete_list = train_list + dev_list
-    lm_train = complete_list[0: len(complete_list)*0.8]
-    lm_test = complete_list[-len(complete_list)*0.2:]
+    lm_train = complete_list[0: int(len(complete_list)*0.8)]
+    lm_test = complete_list[-int(len(complete_list)*0.2):]
 
     with open(os.path.join(TEMP_DIRECTORY, "lm_train.txt"), 'w') as f:
         for item in lm_train:
