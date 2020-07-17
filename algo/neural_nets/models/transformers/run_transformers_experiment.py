@@ -12,11 +12,11 @@ from sklearn.model_selection import train_test_split
 from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
-    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE
+    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
-from project_config import SEED, TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
+from project_config import TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
     ACCURACY
 
 

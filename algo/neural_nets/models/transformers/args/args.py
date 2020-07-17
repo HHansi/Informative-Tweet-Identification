@@ -10,7 +10,7 @@ SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
 MODEL_NAME = "bert-large-cased"
-
+SEED = 777
 
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
 
@@ -38,13 +38,18 @@ args = {
     'logging_steps': 80,
     'save_steps': 80,
     "no_cache": False,
+    "no_save": False,
+    "save_recent_only": True,
     'save_model_every_epoch': True,
     'evaluate_during_training': True,
+    "evaluate_during_training_silent": True,
     'evaluate_during_training_steps': 80,
     "evaluate_during_training_verbose": True,
     'use_cached_eval_features': False,
+    "save_best_model": True,
     'save_eval_checkpoints': True,
     'tensorboard_dir': None,
+    "save_optimizer_and_scheduler": True,
 
     'overwrite_output_dir': True,
     'reprocess_input_data': True,
@@ -52,6 +57,7 @@ args = {
     'process_count': cpu_count() - 2 if cpu_count() > 2 else 1,
     'n_gpu': 1,
     'use_multiprocessing': True,
+    "multiprocessing_chunksize": 500,
     'silent': False,
 
     'wandb_project': None,
@@ -60,4 +66,14 @@ args = {
     "use_early_stopping": True,
     "early_stopping_patience": 10,
     "early_stopping_delta": 0,
+    "early_stopping_metric": "eval_loss",
+    "early_stopping_metric_minimize": True,
+    "early_stopping_consider_epochs": False,
+
+    "manual_seed": SEED,
+
+    "config": {},
+    "local_rank": -1,
+    "encoding": None,
+
 }
