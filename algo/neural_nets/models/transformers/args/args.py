@@ -81,9 +81,9 @@ args = {
 
 
 language_modeling_args = {
-    'output_dir': 'temp_lm/outputs/',
-    "best_model_dir": "temp_lm/outputs/best_model",
-    'cache_dir': 'temp_lm/cache_dir/',
+    'output_dir': 'temp/lm/outputs/',
+    "best_model_dir": "temp/lm/outputs/best_model",
+    'cache_dir': 'temp/lm/cache_dir/',
 
     'fp16': False,
     'fp16_opt_level': 'O1',
