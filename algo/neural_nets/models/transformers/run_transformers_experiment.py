@@ -79,8 +79,8 @@ if args["evaluate_during_training"]:
         print("Started Fold {}".format(i))
         model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
                                     use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
-        train, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
-        model.train_model(train, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
+        train_df, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
+        model.train_model(train_df, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
         model = ClassificationModel(MODEL_TYPE, args["best_model_dir"], args=args,
                                     use_cuda=torch.cuda.is_available())
 
