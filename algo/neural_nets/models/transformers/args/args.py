@@ -10,7 +10,7 @@ SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
 MODEL_NAME = "bert-large-cased"
-LANGUAGE_FINETUNE =True
+LANGUAGE_FINETUNE =False
 SEED = 777
 
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
