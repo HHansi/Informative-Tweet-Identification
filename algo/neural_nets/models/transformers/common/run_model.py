@@ -39,11 +39,11 @@ from transformers import (
     BertTokenizer,
     XLNetConfig,
     XLNetTokenizer,
-    get_linear_schedule_with_warmup
+    get_linear_schedule_with_warmup,
 )
 
 from algo.neural_nets.models.transformers.args.model_args import ClassificationArgs
-from algo.neural_nets.models.transformers.common.utils import LazyClassificationDataset, InputExample, \
+from algo.neural_nets.models.transformers.common.utils import InputExample, LazyClassificationDataset, \
     convert_examples_to_features
 from algo.neural_nets.models.transformers.models.bert_model import BertForSequenceClassification
 from algo.neural_nets.models.transformers.models.xlnet_model import XLNetForSequenceClassification
@@ -196,9 +196,6 @@ class ClassificationModel:
 
         if self.args.silent:
             show_running_loss = False
-
-        if self.args.regression:
-            self.args.labels_map = {}
 
         if self.args.evaluate_during_training and eval_df is None:
             raise ValueError(
@@ -480,11 +477,11 @@ class ClassificationModel:
                             )
 
                     if args.save_steps > 0 and global_step % args.save_steps == 0:
-                        # Save model checkpoint
                         if args.save_recent_only:
                             del_paths = glob.glob(os.path.join(output_dir, 'checkpoint-*'))
                             for del_path in del_paths:
                                 shutil.rmtree(del_path)
+                        # Save model checkpoint
                         output_dir_current = os.path.join(output_dir, "checkpoint-{}".format(global_step))
 
                         self._save_model(output_dir_current, optimizer, scheduler, model=model)
@@ -573,10 +570,12 @@ class ClassificationModel:
                                         return global_step, tr_loss / global_step
 
             epoch_number += 1
+
             if args.save_recent_only:
                 del_paths = glob.glob(os.path.join(output_dir, 'checkpoint-*'))
                 for del_path in del_paths:
                     shutil.rmtree(del_path)
+
             output_dir_current = os.path.join(output_dir, "checkpoint-{}-epoch-{}".format(global_step, epoch_number))
 
             if args.save_model_every_epoch or args.evaluate_during_training:
@@ -699,9 +698,6 @@ class ClassificationModel:
         model = self.model
         args = self.args
         eval_output_dir = output_dir
-
-        if args.regression:
-            args.labels_map = {}
 
         results = {}
         if isinstance(eval_df, str) and self.args.lazy_loading:
@@ -1009,10 +1005,6 @@ class ClassificationModel:
         args = self.args
 
         self._move_model_to_device()
-
-        if args.regression:
-            args.labels_map = {}
-
         dummy_label = 0 if not self.args.labels_map else next(iter(self.args.labels_map.keys()))
 
         if multi_label:

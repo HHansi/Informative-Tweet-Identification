@@ -62,14 +62,9 @@ if LANGUAGE_FINETUNE:
             f.write("%s\n" % item)
 
     model = LanguageModelingModel(MODEL_TYPE, MODEL_NAME, args=language_modeling_args)
-
     model.train_model(os.path.join(TEMP_DIRECTORY, "lm_train.txt"), eval_file=os.path.join(TEMP_DIRECTORY, "lm_test.txt"))
-
     MODEL_NAME = language_modeling_args["best_model_dir"]
 
-
-model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
-                            use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
 
 # Train the model
 print("Started Training")
@@ -82,6 +77,8 @@ if args["evaluate_during_training"]:
         if os.path.exists(args['output_dir']) and os.path.isdir(args['output_dir']):
             shutil.rmtree(args['output_dir'])
         print("Started Fold {}".format(i))
+        model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args,
+                                    use_cuda=torch.cuda.is_available())  # You can set class weights by using the optional weight argument
         train, eval_df = train_test_split(train, test_size=0.1, random_state=SEED * i)
         model.train_model(train, eval_df=eval_df, f1=f1, accuracy=sklearn.metrics.accuracy_score)
         model = ClassificationModel(MODEL_TYPE, args["best_model_dir"], args=args,

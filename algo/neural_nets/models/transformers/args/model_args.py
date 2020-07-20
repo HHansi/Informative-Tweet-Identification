@@ -1,8 +1,9 @@
-import json
-import os
-import sys
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, fields, asdict
 from multiprocessing import cpu_count
+import json
+import sys
+import os
+
 from torch.utils.data import Dataset
 
 
@@ -39,7 +40,7 @@ class ModelArgs:
     evaluate_during_training_silent: bool = True
     evaluate_during_training_steps: int = 2000
     evaluate_during_training_verbose: bool = False
-    fp16: bool = False
+    fp16: bool = True
     fp16_opt_level: str = "O1"
     gradient_accumulation_steps: int = 1
     learning_rate: float = 4e-5
@@ -58,9 +59,9 @@ class ModelArgs:
     process_count: int = field(default_factory=get_default_process_count)
     reprocess_input_data: bool = True
     save_best_model: bool = True
+    save_recent_only: bool = False
     save_eval_checkpoints: bool = True
     save_model_every_epoch: bool = True
-    save_recent_only: bool = False
     save_steps: int = 2000
     save_optimizer_and_scheduler: bool = True
     silent: bool = False
