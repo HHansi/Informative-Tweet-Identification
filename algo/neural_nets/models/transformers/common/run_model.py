@@ -39,7 +39,7 @@ from transformers import (
     BertTokenizer,
     XLNetConfig,
     XLNetTokenizer,
-    get_linear_schedule_with_warmup,
+    get_linear_schedule_with_warmup, ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer,
 )
 
 from algo.neural_nets.models.transformers.args.model_args import ClassificationArgs
@@ -80,6 +80,7 @@ class ClassificationModel:
         MODEL_CLASSES = {
             "bert": (BertConfig, BertForSequenceClassification, BertTokenizer),
             "xlnet": (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
+            "electra": (ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer),
         }
 
         self.args = self._load_model_args(model_name)
