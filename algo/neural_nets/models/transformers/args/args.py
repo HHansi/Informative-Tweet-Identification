@@ -9,7 +9,7 @@ RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
-MODEL_NAME = "bert-large-cased"
+MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
 LANGUAGE_FINETUNE =False
 SEED = 777
 
@@ -34,7 +34,7 @@ args = {
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
     'do_lower_case': False,
-    'n_fold': 5,
+    'n_fold': 3,
 
     'logging_steps': 80,
     'save_steps': 80,
