@@ -214,3 +214,4 @@ gen
 #   git rm -r .ipynb_checkpoints/
 #
 
+/results/
