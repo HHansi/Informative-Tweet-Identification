@@ -7,3 +7,5 @@ requests==2.24.0
 tqdm==4.47.0
 regex==2020.6.8
 demoji==0.2.1
+emoji==0.6.0
+unidecode==1.1.1
