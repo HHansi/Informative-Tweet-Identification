@@ -12,7 +12,8 @@ from sklearn.model_selection import train_test_split
 from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
-    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE, language_modeling_args
+    args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE, language_modeling_args, \
+    PREPROCESS_TYPE
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
@@ -36,15 +37,15 @@ dev = pd.read_csv(VALIDATION_DATA_PATH, sep='\t')
 train['class'] = encode(train["Label"])
 train['text'] = train["Text"]
 train = train[['text', 'class']]
-train['text'] = train['text'].apply(lambda x: transformer_pipeline(x))
+train['text'] = train['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
 dev['class'] = encode(dev["Label"])
 dev['text'] = dev["Text"]
 dev = dev[['text', 'class']]
-dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x))
+dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
 # test['text'] = test["Label"]
-# test['text'] = test['text'].apply(lambda x: transformer_pipeline(x))
+# test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
 if LANGUAGE_FINETUNE:
     train_list = train['text'].tolist()
