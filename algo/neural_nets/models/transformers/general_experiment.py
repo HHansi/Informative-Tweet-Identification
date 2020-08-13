@@ -4,8 +4,17 @@ import torch
 
 from algo.neural_nets.models.transformers.args.args import MODEL_TYPE, MODEL_NAME, args
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
-from algo.neural_nets.models.transformers.common.utils import tokenize_text
+# from algo.neural_nets.models.transformers.common.utils import tokenize_text
 from project_config import TRAINING_DATA_PATH, VALIDATION_DATA_PATH
+
+
+def tokenize_text(data, tokenizer):
+    max_tokens = 0
+    for text in data:
+        tokens = tokenizer.tokenize(text)
+        if len(tokens) > max_tokens:
+            max_tokens = len(tokens)
+    return max_tokens
 
 
 def get_max_seq_length():
