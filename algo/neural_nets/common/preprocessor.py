@@ -41,8 +41,10 @@ def transformer_pipeline(x, preprocess_type):
 
 
 def preprocess(x):
+    x = standardize_text(x)
     x = remove_words(x)
     x = add_emoji_text(x)
+    x = standardize_punctuation(x)
     return x
 
 
