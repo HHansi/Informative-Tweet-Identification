@@ -40,7 +40,8 @@ from transformers import (
     XLNetConfig,
     XLNetTokenizer,
     get_linear_schedule_with_warmup, ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer,
-)
+    RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer, AlbertConfig, AlbertForSequenceClassification,
+    AlbertTokenizer)
 
 from algo.neural_nets.models.transformers.args.model_args import ClassificationArgs
 from algo.neural_nets.models.transformers.common.utils import InputExample, LazyClassificationDataset, \
@@ -81,6 +82,8 @@ class ClassificationModel:
             "bert": (BertConfig, BertForSequenceClassification, BertTokenizer),
             "xlnet": (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
             "electra": (ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer),
+            "roberta": (RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer),
+            "albert": (AlbertConfig, AlbertForSequenceClassification, AlbertTokenizer),
         }
 
         self.args = self._load_model_args(model_name)
