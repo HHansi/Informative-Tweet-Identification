@@ -8,8 +8,8 @@ DEV_EVAL_FILE = 'dev_eval.txt'
 RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
-MODEL_TYPE = "roberta"  # "bert"
-MODEL_NAME = "roberta-large"  # "digitalepidemiologylab/covid-twitter-bert"
+MODEL_TYPE = "albert"  # "bert"
+MODEL_NAME = "albert-xxlarge-v1"  # "digitalepidemiologylab/covid-twitter-bert"
 LANGUAGE_FINETUNE =False
 SEED = 777
 PREPROCESS_TYPE = "normal"  # or "ct-bert"
@@ -34,7 +34,7 @@ args = {
     'warmup_ratio': 0.06,
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
-    'do_lower_case': False,
+    'do_lower_case': True,
     'n_fold': 3,
 
     'logging_steps': 80,
