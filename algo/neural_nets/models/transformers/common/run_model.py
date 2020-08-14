@@ -84,7 +84,7 @@ class ClassificationModel:
             "electra": (ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer),
             "roberta": (RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer),
             "albert": (AlbertConfig, AlbertForSequenceClassification, AlbertTokenizer),
-            "bertweet": (RobertaConfig, AutoModelForSequenceClassification, RobertaTokenizer),
+            "bertweet": (BertConfig, AutoModelForSequenceClassification, BertTokenizer),
         }
 
         self.args = self._load_model_args(model_name)
