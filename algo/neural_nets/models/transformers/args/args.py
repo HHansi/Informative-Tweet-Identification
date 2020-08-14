@@ -8,11 +8,11 @@ DEV_EVAL_FILE = 'dev_eval.txt'
 RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
-MODEL_TYPE = "bert"
-MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
+MODEL_TYPE = "roberta"  # "bert"
+MODEL_NAME = "roberta-large"  # "digitalepidemiologylab/covid-twitter-bert"
 LANGUAGE_FINETUNE =False
 SEED = 777
-PREPROCESS_TYPE = "ct-bert"  # or "normal"
+PREPROCESS_TYPE = "normal"  # or "ct-bert"
 
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
 
@@ -34,7 +34,7 @@ args = {
     'warmup_ratio': 0.06,
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
-    'do_lower_case': True,
+    'do_lower_case': False,
     'n_fold': 3,
 
     'logging_steps': 80,
