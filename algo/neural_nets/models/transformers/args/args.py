@@ -9,10 +9,10 @@ RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"
 MODEL_TYPE = "bert"
-MODEL_NAME = "bert-large-cased"  # "digitalepidemiologylab/covid-twitter-bert"
-LANGUAGE_FINETUNE =False
+MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
+LANGUAGE_FINETUNE =True
 SEED = 777
-PREPROCESS_TYPE = "normal"  # or "ct-bert"
+PREPROCESS_TYPE = "ct-bert"  # or "normal"
 
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
 
@@ -34,7 +34,7 @@ args = {
     'warmup_ratio': 0.06,
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
-    'do_lower_case': False,
+    'do_lower_case': True,
     'n_fold': 3,
 
     'logging_steps': 80,
