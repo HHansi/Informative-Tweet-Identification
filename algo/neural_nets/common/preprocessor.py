@@ -5,6 +5,11 @@ import demoji
 import emoji
 import unicodedata
 import unidecode
+from nltk import TweetTokenizer
+
+from algo.neural_nets.common.ne_processor import read_vocab, replace_with_entities
+from algo.neural_nets.models.transformers.args.args import args, PREPROCESS_WITH_NE
+from project_config import VOCAB_PATH, USER_FILLER, URL_FILLER
 
 demoji.download_codes()
 
@@ -16,8 +21,6 @@ control_char_regex = re.compile(r'[\r\n\t]+')
 
 USER = "@USER"
 URL = "HTTPURL"
-USER_FILLER = "twitteruser"
-URL_FILLER = "twitterurl"
 
 
 def remove_words(x):
@@ -45,6 +48,8 @@ def preprocess(x):
     x = add_emoji_text(x)
     x = standardize_text(x)
     x = standardize_punctuation(x)
+    if PREPROCESS_WITH_NE:
+        x = preprocess_with_ne(x)
     return x
 
 
@@ -61,7 +66,17 @@ def preprocess_ct_bert(x):
     text = replace_multi_occurrences(text, USER_FILLER)
     text = replace_multi_occurrences(text, URL_FILLER)
     text = remove_unicode_symbols(text)
+
+    if PREPROCESS_WITH_NE:
+        text = preprocess_with_ne(text)
     return text
+
+
+def preprocess_with_ne(x):
+    tokenizer = TweetTokenizer(reduce_len=True, strip_handles=False)
+    vocab = read_vocab(VOCAB_PATH)
+    new_text, replaced_words = replace_with_entities(x, vocab, tokenizer, args["do_lower_case"])
+    return new_text
 
 
 def clean_retweet_tags(x):

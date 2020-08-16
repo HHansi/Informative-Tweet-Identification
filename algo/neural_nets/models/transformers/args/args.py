@@ -13,6 +13,7 @@ MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
 LANGUAGE_FINETUNE =True
 SEED = 777
 PREPROCESS_TYPE = "ct-bert"  # or "normal"
+PREPROCESS_WITH_NE = False
 
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
 
