@@ -4,7 +4,8 @@ import spacy
 from nltk import TweetTokenizer
 
 from algo.neural_nets.common.utility import read_vocab
-from algo.neural_nets.models.transformers.args import args
+from algo.neural_nets.models.transformers.args.args import args
+
 from project_config import USER_FILLER, URL_FILLER, VOCAB_PATH
 
 nlp = spacy.load('en_core_web_lg')
