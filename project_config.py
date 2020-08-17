@@ -19,3 +19,5 @@ VOCAB_PATH = "E:/Models/covid-twitter-bert-v1/covid-twitter-bert-v1/vocab.txt"
 # TRAINING_DATA_PATH = "/content/drive/My Drive/Colab Notebooks/W-NUT/COVID19Tweet/train.tsv"
 # VALIDATION_DATA_PATH = "/content/drive/My Drive/Colab Notebooks/W-NUT/COVID19Tweet/valid.tsv"
 
+# VOCAB_PATH = "/content/drive/My Drive/Colab Notebooks/W-NUT/covid-twitter-bert-v1/vocab.txt"
+
