@@ -74,3 +74,12 @@ def save_eval_results(results, output_eval_file):
     with open(output_eval_file, "w") as writer:
         for key in sorted(results.keys()):
             writer.write("{} = {}\n".format(key, results[key]))
+
+
+# Read vocabulary of trained model
+def read_vocab(filepath):
+    f = open(filepath, 'r', encoding='utf-8')
+    vocab = f.readlines()
+    f.close()
+    vocab = [str.replace(word, '\n', '') for word in vocab]
+    return vocab

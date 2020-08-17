@@ -1,8 +1,11 @@
 # Created by Hansi at 2/28/2020
 
 import spacy
+from nltk import TweetTokenizer
 
-from project_config import USER_FILLER, URL_FILLER
+from algo.neural_nets.common.utility import read_vocab
+from algo.neural_nets.models.transformers.args import args
+from project_config import USER_FILLER, URL_FILLER, VOCAB_PATH
 
 nlp = spacy.load('en_core_web_lg')
 
@@ -30,14 +33,8 @@ entity_names['QUANTITY'] = 'quantity'
 entity_names['ORDINAL'] = 'ordinal'  # not in vocab
 entity_names['CARDINAL'] = 'cardinal'
 
-
-# Read vocabulary of trained model
-def read_vocab(filepath):
-    f = open(filepath, 'r', encoding='utf-8')
-    vocab = f.readlines()
-    f.close()
-    vocab = [str.replace(word, '\n', '') for word in vocab]
-    return vocab
+tokenizer = TweetTokenizer(reduce_len=True, strip_handles=False)
+vocab = read_vocab(VOCAB_PATH)
 
 
 def tokenize_text(text, tokenizer):
@@ -97,6 +94,11 @@ def replace_with_entities(text, vocab, tokenizer, do_lower_case):
                         new_text = str.replace(new_text, word, entity_names[dict_entities[entity_word]])
                         replaced_words.append(word + '-' + entity_names[dict_entities[entity_word]])
     return new_text, replaced_words
+
+
+def preprocess_with_ne(x):
+    new_text, replaced_words = replace_with_entities(x, vocab, tokenizer, args["do_lower_case"])
+    return new_text
 
 # if __name__ == "__main__":
 # # #     # text = "IMPOANT STORY DEVELOPING: twitteruser reports 5 long-term facilities have COVID-19 outbreaks in Ozaukee and Washington counties. 6 more suspected. Workers may have been transferring virus between facilities. Story leads twitteruser at 9!"
