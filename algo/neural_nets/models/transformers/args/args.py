@@ -16,6 +16,10 @@ SEED = 777
 PREPROCESS_TYPE = "ct-bert"  # or "normal"
 PREPROCESS_WITH_NE = False
 
+N_CLASSES = 2
+INCLUDE_RAW_PREDICTIONS = False
+TAG_RAW = "raw"
+
 # training instances = 7000 > if batch size=8, batches = 875 > evaluate during training steps -> 80 or 175
 
 args = {
