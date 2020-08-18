@@ -13,7 +13,7 @@ from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
     args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE, language_modeling_args, \
-    PREPROCESS_TYPE, TEST_RESULT_FILE
+    PREPROCESS_TYPE, TEST_RESULT_FILE, SUBMISSION_FILE
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
@@ -137,6 +137,12 @@ dev.to_csv(os.path.join(TEMP_DIRECTORY, DEV_RESULT_FILE), header=True, sep='\t',
 save_eval_results(results, os.path.join(TEMP_DIRECTORY, DEV_EVAL_FILE))
 
 test.to_csv(os.path.join(TEMP_DIRECTORY, TEST_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
+
+output_file = open(os.path.join(TEMP_DIRECTORY, SUBMISSION_FILE), 'w', encoding='utf-8')
+test_preds = test['predictions']
+for pred in test_preds:
+    output_file.write(pred + '\n')
+output_file.close()
 
 print("Finished Evaluation")
 
