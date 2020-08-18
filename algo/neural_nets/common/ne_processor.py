@@ -4,11 +4,14 @@ import spacy
 from nltk import TweetTokenizer
 
 from algo.neural_nets.common.utility import read_vocab
-from algo.neural_nets.models.transformers.args.args import args
+from algo.neural_nets.models.transformers.args.args import args, PREPROCESS_WITH_NE
 
 from project_config import USER_FILLER, URL_FILLER, VOCAB_PATH
 
-nlp = spacy.load('en_core_web_lg')
+if PREPROCESS_WITH_NE:
+    nlp = spacy.load('en_core_web_lg')
+    tokenizer = TweetTokenizer(reduce_len=True, strip_handles=False)
+    vocab = read_vocab(VOCAB_PATH)
 
 ignored_entities = ['WORK_OF_ART', 'DATE', 'TIME', 'QUANTITY', 'PERCENT', 'MONEY', 'ORDINAL', 'CARDINAL']
 ignored_tokens = [USER_FILLER, URL_FILLER]
@@ -33,9 +36,6 @@ entity_names['MONEY'] = 'money'
 entity_names['QUANTITY'] = 'quantity'
 entity_names['ORDINAL'] = 'ordinal'  # not in vocab
 entity_names['CARDINAL'] = 'cardinal'
-
-tokenizer = TweetTokenizer(reduce_len=True, strip_handles=False)
-vocab = read_vocab(VOCAB_PATH)
 
 
 def tokenize_text(text, tokenizer):
@@ -101,22 +101,3 @@ def preprocess_with_ne(x):
     new_text, replaced_words = replace_with_entities(x, vocab, tokenizer, args["do_lower_case"])
     return new_text
 
-# if __name__ == "__main__":
-# # #     # text = "IMPOANT STORY DEVELOPING: twitteruser reports 5 long-term facilities have COVID-19 outbreaks in Ozaukee and Washington counties. 6 more suspected. Workers may have been transferring virus between facilities. Story leads twitteruser at 9!"
-# # #     # text = "IMPORTANT STORY DEVELOPING: @USER reports 5 long-term facilities have COVID-19 outbreaks in Ozaukee and Washington Counties. 6 more suspected. Workers may have been transferring virus between facilities. Story leads @USER at 9!"
-#     text = "Second case DR ðŸ‡©ðŸ‡´ The Canadian woman has not been identified, however they indicated that she is 70 years old and that she was staying with her husband in a Bayahibe hotel, according to the Minister of Public Health. #CoronaVirusRD #CoronaVirus #COVID19"
-#     # model = ClassificationModel(MODEL_TYPE, MODEL_NAME, args=args, use_cuda=torch.cuda.is_available())
-#     # tokenizer = model.tokenizer
-#     # tokens = tokenise_text(text, tokenizer)
-#     # print(tokens)
-#
-#     tokenizer = TweetTokenizer(reduce_len=True, strip_handles=False)
-#     tokens = tokenize_text(text, tokenizer)
-#     print(tokens)
-#     vocab = read_vocab(VOCAB_PATH)
-#
-#     print(get_entities(text))
-#
-#     new_text, replaced_words = replace_with_entities(text, vocab, tokenizer, True)
-#     print(new_text)
-#     # print(replaced_words)
