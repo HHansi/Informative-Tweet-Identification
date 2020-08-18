@@ -11,7 +11,7 @@ SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "predictions.txt"
 MODEL_TYPE = "bert"
 MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
-LANGUAGE_FINETUNE =True
+LANGUAGE_FINETUNE = False
 SEED = 777
 PREPROCESS_TYPE = "ct-bert"  # or "normal"
 PREPROCESS_WITH_NE = False
@@ -29,9 +29,9 @@ args = {
     'train_batch_size': 8,
     'gradient_accumulation_steps': 1,
     'eval_batch_size': 8,
-    'num_train_epochs': 3,
+    'num_train_epochs': 5,
     'weight_decay': 0,
-    'learning_rate': 1e-5,
+    'learning_rate': 2e-5,
     'adam_epsilon': 1e-8,
     'warmup_ratio': 0.06,
     'warmup_steps': 0,
