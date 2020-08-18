@@ -13,6 +13,7 @@ URL_FILLER = "twitterurl"
 
 TRAINING_DATA_PATH = "E:/Work Spaces/Python/W-NUT/COVID19Tweet/train.tsv"
 VALIDATION_DATA_PATH = "E:/Work Spaces/Python/W-NUT/COVID19Tweet/valid.tsv"
+TEST_DATA_PATH = "E:/Work Spaces/Python/W-NUT/COVID19Tweet/unlabeled_test_with_noise.tsv"
 
 VOCAB_PATH = "E:/Models/covid-twitter-bert-v1/covid-twitter-bert-v1/vocab.txt"
 

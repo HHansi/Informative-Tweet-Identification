@@ -5,6 +5,7 @@ TRAIN_FILE = "train.tsv"
 TEST_FILE = "test.tsv"
 DEV_RESULT_FILE = "dev_result.tsv"
 DEV_EVAL_FILE = 'dev_eval.txt'
+TEST_RESULT_FILE = "test_result.tsv"
 RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "transformers"

@@ -13,14 +13,13 @@ from algo.neural_nets.common.preprocessor import transformer_pipeline
 from algo.neural_nets.common.utility import evaluatation_scores, save_eval_results
 from algo.neural_nets.models.transformers.args.args import TEMP_DIRECTORY, MODEL_TYPE, MODEL_NAME, \
     args, DEV_RESULT_FILE, SUBMISSION_FOLDER, DEV_EVAL_FILE, SEED, LANGUAGE_FINETUNE, language_modeling_args, \
-    PREPROCESS_TYPE
+    PREPROCESS_TYPE, TEST_RESULT_FILE
 from algo.neural_nets.models.transformers.common.data_converter import encode, decode
 from algo.neural_nets.models.transformers.common.evaluation import f1, labels, pos_label
 from algo.neural_nets.models.transformers.common.run_model import ClassificationModel
 from algo.neural_nets.models.transformers.language_modeling import LanguageModelingModel
 from project_config import TRAINING_DATA_PATH, VALIDATION_DATA_PATH, CONFUSION_MATRIX, F1, RECALL, PRECISION, \
-    ACCURACY
-
+    ACCURACY, TEST_DATA_PATH
 
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
@@ -33,6 +32,9 @@ if not os.path.exists(os.path.join(TEMP_DIRECTORY, SUBMISSION_FOLDER)): os.maked
 train = pd.read_csv(TRAINING_DATA_PATH, sep='\t')
 dev = pd.read_csv(VALIDATION_DATA_PATH, sep='\t')
 
+colnames=['Id', 'Text']
+test = pd.read_csv(TEST_DATA_PATH, sep='\t', names=colnames, header=None)
+
 # train, dev = train_test_split(full, test_size=0.2, random_state=SEED)
 train['class'] = encode(train["Label"])
 train['text'] = train["Text"]
@@ -44,8 +46,9 @@ dev['text'] = dev["Text"]
 dev = dev[['text', 'class']]
 dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
-# test['text'] = test["Label"]
-# test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
+test['text'] = test["Text"]
+test = test[['text']]
+test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
 if LANGUAGE_FINETUNE:
     train_list = train['text'].tolist()
@@ -73,6 +76,9 @@ print("Started Training")
 dev_sentences = dev['text'].tolist()
 dev_preds = np.zeros((len(dev), args["n_fold"]))
 
+test_sentences = test['text'].tolist()
+test_preds = np.zeros((len(test), args["n_fold"]))
+
 if args["evaluate_during_training"]:
     for i in range(args["n_fold"]):
         if os.path.exists(args['output_dir']) and os.path.isdir(args['output_dir']):
@@ -87,6 +93,9 @@ if args["evaluate_during_training"]:
 
         predictions, raw_outputs = model.predict(dev_sentences)
         dev_preds[:, i] = predictions
+
+        test_predictions, test_raw_outputs = model.predict(test_sentences)
+        test_preds[:, i] = test_predictions
         print("Completed Fold {}".format(i))
     # select majority class of each instance (row)
     final_predictions = []
@@ -94,13 +103,24 @@ if args["evaluate_during_training"]:
         row = row.tolist()
         final_predictions.append(int(max(set(row), key=row.count)))
     dev['predictions'] = final_predictions
+
+    final_predictions_test = []
+    for row in test_preds:
+        row = row.tolist()
+        final_predictions_test.append(int(max(set(row), key=row.count)))
+    test['predictions'] = final_predictions_test
 else:
     model.train_model(train, f1=f1, accuracy=sklearn.metrics.accuracy_score)
     predictions, raw_outputs = model.predict(dev_sentences)
     dev['predictions'] = predictions
+    test_predictions, test_raw_outputs = model.predict(test_sentences)
+    test['predictions'] = test_predictions
+
 
 dev['predictions'] = decode(dev['predictions'])
 dev['class'] = decode(dev['class'])
+
+test['predictions'] = decode(test['predictions'])
 
 time.sleep(5)
 
@@ -115,6 +135,8 @@ print("Precision {}".format(results[PRECISION]))
 
 dev.to_csv(os.path.join(TEMP_DIRECTORY, DEV_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
 save_eval_results(results, os.path.join(TEMP_DIRECTORY, DEV_EVAL_FILE))
+
+test.to_csv(os.path.join(TEMP_DIRECTORY, TEST_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
 
 print("Finished Evaluation")
 
