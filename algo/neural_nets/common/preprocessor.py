@@ -39,7 +39,7 @@ def transformer_pipeline(x, preprocess_type):
     if "ct-bert" == preprocess_type:
         return preprocess_ct_bert(x)
     if "bert-tweet" == preprocess_type:
-        return preprocess_bert_tweet()
+        return preprocess_bert_tweet(x)
     else:
         return preprocess(x)
 
