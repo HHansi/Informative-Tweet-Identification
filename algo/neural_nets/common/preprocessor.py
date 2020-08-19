@@ -38,6 +38,8 @@ def add_emoji_text(x):
 def transformer_pipeline(x, preprocess_type):
     if "ct-bert" == preprocess_type:
         return preprocess_ct_bert(x)
+    if "bert-tweet" == preprocess_type:
+        return preprocess_bert_tweet()
     else:
         return preprocess(x)
 
@@ -65,6 +67,16 @@ def preprocess_ct_bert(x):
     text = replace_multi_occurrences(text, USER_FILLER)
     text = replace_multi_occurrences(text, URL_FILLER)
     text = remove_unicode_symbols(text)
+
+    if PREPROCESS_WITH_NE:
+        text = preprocess_with_ne(text)
+    return text
+
+
+def preprocess_bert_tweet(text):
+    text = replace_usernames(text, "@USER")
+    text = replace_urls(text, "HTTPURL")
+    text = asciify_emojis(text)
 
     if PREPROCESS_WITH_NE:
         text = preprocess_with_ne(text)

@@ -1,5 +1,5 @@
 tokenizers==0.8.1rc1
-transformers==3.0.2
+git://github.com/datquocnguyen/transformers.git
 tensorboardX==2.1
 wandb==0.9.2
 pyyaml==5.3.1

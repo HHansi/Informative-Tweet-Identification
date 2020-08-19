@@ -35,6 +35,8 @@ from torch.utils.data.distributed import DistributedSampler
 from transformers import (
     WEIGHTS_NAME,
     AdamW,
+    BertweetConfig,
+    BertweetTokenizer,
     BertConfig,
     BertTokenizer,
     XLNetConfig,
@@ -84,7 +86,7 @@ class ClassificationModel:
             "electra": (ElectraConfig, ElectraForSequenceClassification, ElectraTokenizer),
             "roberta": (RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer),
             "albert": (AlbertConfig, AlbertForSequenceClassification, AlbertTokenizer),
-            "bertweet": (BertConfig, AutoModelForSequenceClassification, BertTokenizer),
+            "bertweet": (BertweetConfig, RobertaForSequenceClassification, BertweetTokenizer),
         }
 
         self.args = self._load_model_args(model_name)
