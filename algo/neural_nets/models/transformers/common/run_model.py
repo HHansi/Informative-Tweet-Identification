@@ -154,7 +154,7 @@ class ClassificationModel:
         if not use_cuda:
             self.args.fp16 = False
 
-        self.tokenizer = tokenizer_class.from_pretrained(model_name, do_lower_case=self.args.do_lower_case, **kwargs)
+        self.tokenizer = tokenizer_class.from_pretrained("vinai/bertweet-base", do_lower_case=self.args.do_lower_case, **kwargs)
 
         self.args.model_name = model_name
         self.args.model_type = model_type
@@ -1221,7 +1221,7 @@ class ClassificationModel:
             # Take care of distributed/parallel training
             model_to_save = model.module if hasattr(model, "module") else model
             model_to_save.save_pretrained(output_dir)
-            self.tokenizer.save_pretrained(output_dir)
+            # self.tokenizer.save_pretrained(output_dir)
             torch.save(self.args, os.path.join(output_dir, "training_args.bin"))
             if optimizer and scheduler and self.args.save_optimizer_and_scheduler:
                 torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
