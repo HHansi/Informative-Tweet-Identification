@@ -4,6 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 # le = LabelEncoder()
 
 label_map = {'UNINFORMATIVE': 0, 'INFORMATIVE': 1}
+decode_label_map = {0: 'UNINFORMATIVE', 1: 'INFORMATIVE'}
 
 #
 # def encode_le(data):
@@ -19,14 +20,13 @@ def encode(data):
 
 
 def decode(data):
-    # print('decoding data')
-    # print('data: ', data)
-    decode_label_map = dict()
-    for key, value in label_map.items():
-        decode_label_map[value] = key
-    decoded_data = [decode_label_map[row] for row in data]
-    # print('decoded data: ', decoded_data)
-    return decoded_data
+    # decode_label_map = dict()
+    # for key, value in label_map.items():
+    #     decode_label_map[value] = key
+    # decoded_data = [decode_label_map[row] for row in data]
+    # # print('decoded data: ', decoded_data)
+    # return decoded_data
+    return [decode_label_map[row] for row in data]
 
 
 if __name__ == "__main__":
