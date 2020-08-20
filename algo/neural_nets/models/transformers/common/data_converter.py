@@ -20,13 +20,15 @@ def encode(data):
 
 
 def decode(data):
+    print("decoding data")
+    print("data: ", data)
     # decode_label_map = dict()
     # for key, value in label_map.items():
     #     decode_label_map[value] = key
-    # decoded_data = [decode_label_map[row] for row in data]
-    # # print('decoded data: ', decoded_data)
-    # return decoded_data
-    return [decode_label_map[row] for row in data]
+    decoded_data = [decode_label_map[row] for row in data]
+    print('decoded data: ', decoded_data)
+    return decoded_data
+
 
 
 if __name__ == "__main__":
