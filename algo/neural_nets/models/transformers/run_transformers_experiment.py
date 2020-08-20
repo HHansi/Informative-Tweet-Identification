@@ -145,9 +145,13 @@ if args["evaluate_during_training"]:
         # calculate average of raw prediction
         avg_raw_preds, final_raw_preds = average_predictions(dev_raw_preds)
         dev['raw-predictions'] = final_raw_preds
+        dev['0'] = avg_raw_preds[:, 0]
+        dev['1'] = avg_raw_preds[:, 1]
 
         avg_raw_preds, final_raw_preds = average_predictions(test_raw_preds)
         test['raw-predictions'] = final_raw_preds
+        test['0'] = avg_raw_preds[:, 0]
+        test['1'] = avg_raw_preds[:, 1]
 
 else:
     model.train_model(train, f1=f1, accuracy=sklearn.metrics.accuracy_score)
