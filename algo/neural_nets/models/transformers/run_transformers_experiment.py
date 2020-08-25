@@ -53,8 +53,8 @@ def print_results(results):
 train = pd.read_csv(TRAINING_DATA_PATH, sep='\t')
 dev = pd.read_csv(VALIDATION_DATA_PATH, sep='\t')
 
-colnames = ['Id', 'Text']
-test = pd.read_csv(TEST_DATA_PATH, sep='\t', names=colnames, header=None)
+# colnames = ['Id', 'Text']
+# test = pd.read_csv(TEST_DATA_PATH, sep='\t', names=colnames, header=None)
 
 # train, dev = train_test_split(full, test_size=0.2, random_state=SEED)
 train['class'] = encode(train["Label"])
@@ -67,9 +67,9 @@ dev['text'] = dev["Text"]
 dev = dev[['text', 'class']]
 dev['text'] = dev['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
-test['text'] = test["Text"]
-test = test[['text']]
-test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
+# test['text'] = test["Text"]
+# test = test[['text']]
+# test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
 if LANGUAGE_FINETUNE:
     train_list = train['text'].tolist()
@@ -98,9 +98,9 @@ dev_sentences = dev['text'].tolist()
 dev_preds = np.zeros((len(dev), args["n_fold"]))
 dev_raw_preds = [np.zeros((len(dev), args["n_fold"])) for i in range(N_CLASSES)]
 
-test_sentences = test['text'].tolist()
-test_preds = np.zeros((len(test), args["n_fold"]))
-test_raw_preds = [np.zeros((len(test), args["n_fold"])) for i in range(N_CLASSES)]
+# test_sentences = test['text'].tolist()
+# test_preds = np.zeros((len(test), args["n_fold"]))
+# test_raw_preds = [np.zeros((len(test), args["n_fold"])) for i in range(N_CLASSES)]
 
 if args["evaluate_during_training"]:
     for i in range(args["n_fold"]):
@@ -120,11 +120,11 @@ if args["evaluate_during_training"]:
         for j in range(N_CLASSES):
             dev_raw_preds[j][:, i] = np_raw_output[:, j]
 
-        test_predictions, test_raw_outputs = model.predict(test_sentences)
-        test_preds[:, i] = test_predictions
-        np_test_raw_output = np.array(test_raw_outputs)
-        for j in range(N_CLASSES):
-            test_raw_preds[j][:, i] = np_test_raw_output[:, j]
+        # test_predictions, test_raw_outputs = model.predict(test_sentences)
+        # test_preds[:, i] = test_predictions
+        # np_test_raw_output = np.array(test_raw_outputs)
+        # for j in range(N_CLASSES):
+        #     test_raw_preds[j][:, i] = np_test_raw_output[:, j]
 
         print("Completed Fold {}".format(i))
 
@@ -135,35 +135,35 @@ if args["evaluate_during_training"]:
         final_predictions.append(int(max(set(row), key=row.count)))
     dev['predictions'] = final_predictions
 
-    final_predictions_test = []
-    for row in test_preds:
-        row = row.tolist()
-        final_predictions_test.append(int(max(set(row), key=row.count)))
-    test['predictions'] = final_predictions_test
+    # final_predictions_test = []
+    # for row in test_preds:
+    #     row = row.tolist()
+    #     final_predictions_test.append(int(max(set(row), key=row.count)))
+    # test['predictions'] = final_predictions_test
 
     if INCLUDE_RAW_PREDICTIONS:
         # calculate average of raw prediction
         avg_raw_preds, final_raw_preds = average_predictions(dev_raw_preds)
         dev['raw-predictions'] = final_raw_preds
 
-        avg_raw_preds, final_raw_preds = average_predictions(test_raw_preds)
-        test['raw-predictions'] = final_raw_preds
+        # avg_raw_preds, final_raw_preds = average_predictions(test_raw_preds)
+        # test['raw-predictions'] = final_raw_preds
 
 else:
     model.train_model(train, f1=f1, accuracy=sklearn.metrics.accuracy_score)
     predictions, raw_outputs = model.predict(dev_sentences)
     dev['predictions'] = predictions
-    test_predictions, test_raw_outputs = model.predict(test_sentences)
-    test['predictions'] = test_predictions
+    # test_predictions, test_raw_outputs = model.predict(test_sentences)
+    # test['predictions'] = test_predictions
 
 dev['predictions'] = decode(dev['predictions'])
 dev['class'] = decode(dev['class'])
 
-test['predictions'] = decode(test['predictions'])
+# test['predictions'] = decode(test['predictions'])
 
 if INCLUDE_RAW_PREDICTIONS:
     dev['raw-predictions'] = decode(dev['raw-predictions'])
-    test['raw-predictions'] = decode(test['raw-predictions'])
+    # test['raw-predictions'] = decode(test['raw-predictions'])
 
 time.sleep(5)
 
@@ -179,19 +179,19 @@ if INCLUDE_RAW_PREDICTIONS:
     save_eval_results(results, os.path.join(TEMP_DIRECTORY, TAG_RAW + "-" + DEV_EVAL_FILE))
 
 dev.to_csv(os.path.join(TEMP_DIRECTORY, DEV_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
-test.to_csv(os.path.join(TEMP_DIRECTORY, TEST_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
+# test.to_csv(os.path.join(TEMP_DIRECTORY, TEST_RESULT_FILE), header=True, sep='\t', index=False, encoding='utf-8')
 
-output_file = open(os.path.join(TEMP_DIRECTORY, SUBMISSION_FILE), 'w', encoding='utf-8')
-test_preds = test['predictions']
-for pred in test_preds:
-    output_file.write(pred + '\n')
-output_file.close()
-
-if INCLUDE_RAW_PREDICTIONS:
-    output_file = open(os.path.join(TEMP_DIRECTORY, TAG_RAW + "-" + SUBMISSION_FILE), 'w', encoding='utf-8')
-    test_preds = test['raw-predictions']
-    for pred in test_preds:
-        output_file.write(pred + '\n')
-    output_file.close()
+# output_file = open(os.path.join(TEMP_DIRECTORY, SUBMISSION_FILE), 'w', encoding='utf-8')
+# test_preds = test['predictions']
+# for pred in test_preds:
+#     output_file.write(pred + '\n')
+# output_file.close()
+#
+# if INCLUDE_RAW_PREDICTIONS:
+#     output_file = open(os.path.join(TEMP_DIRECTORY, TAG_RAW + "-" + SUBMISSION_FILE), 'w', encoding='utf-8')
+#     test_preds = test['raw-predictions']
+#     for pred in test_preds:
+#         output_file.write(pred + '\n')
+#     output_file.close()
 
 print("Finished Evaluation")
