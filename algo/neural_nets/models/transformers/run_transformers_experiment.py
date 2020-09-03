@@ -72,11 +72,14 @@ train = pd.read_csv(TRAINING_DATA_PATH, sep='\t', names=colnames, header=None)
 # test = test[['text']]
 # test['text'] = test['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
+start_time = time.time()
 if LANGUAGE_FINETUNE:
     train_list = train['text'].tolist()
     # dev_list = dev['text'].tolist()
     # complete_list = train_list + dev_list
     complete_list = train_list
+    print('train size: ', len(complete_list))
+
     lm_train = complete_list[0: int(len(complete_list) * 0.8)]
     lm_test = complete_list[-int(len(complete_list) * 0.2):]
 
@@ -89,9 +92,16 @@ if LANGUAGE_FINETUNE:
             f.write("%s\n" % item)
 
     model = LanguageModelingModel(MODEL_TYPE, MODEL_NAME, args=language_modeling_args)
+    temp_start_time = time.time()
     model.train_model(os.path.join(TEMP_DIRECTORY, "lm_train.txt"),
                       eval_file=os.path.join(TEMP_DIRECTORY, "lm_test.txt"))
+    temp_end_time = time.time()
+    print('Completed learning in ', int(temp_end_time - temp_start_time), ' seconds')
     MODEL_NAME = language_modeling_args["best_model_dir"]
+
+end_time = time.time()
+print('Completed LM in ', int(end_time - start_time), ' seconds')
+
 
 # Train the model
 # print("Started Training")
