@@ -59,7 +59,7 @@ train = pd.read_csv(TRAINING_DATA_PATH, sep='\t', names=colnames, header=None)
 
 # train, dev = train_test_split(full, test_size=0.2, random_state=SEED)
 # train['class'] = encode(train["Label"])
-# train['text'] = train["Text"]
+train['text'] = train["Text"]
 # train = train[['text', 'class']]
 # train['text'] = train['text'].apply(lambda x: transformer_pipeline(x, PREPROCESS_TYPE))
 
