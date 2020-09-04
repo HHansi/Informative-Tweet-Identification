@@ -5,35 +5,27 @@
 from __future__ import absolute_import, division, print_function
 
 import glob
-import json
 import logging
 import math
 import os
 import random
 import shutil
 import warnings
-from multiprocessing import cpu_count
 from dataclasses import asdict
 
 import numpy as np
-from scipy.stats import mode, pearsonr
+import pandas as pd
+import torch
+from scipy.stats import mode
 from sklearn.metrics import (
     confusion_matrix,
     label_ranking_average_precision_score,
     matthews_corrcoef,
-    mean_squared_error,
 )
-from tqdm.auto import tqdm, trange
-from tqdm.contrib import tenumerate
-
-import pandas as pd
-import torch
-
 from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
-from torch.utils.data.distributed import DistributedSampler
+from tqdm.auto import tqdm, trange
 from transformers import (
-    WEIGHTS_NAME,
     AdamW,
     BertConfig,
     BertTokenizer,
@@ -61,7 +53,8 @@ logger = logging.getLogger(__name__)
 
 class ClassificationModel:
     def __init__(
-        self, model_type, model_name, num_labels=None, weight=None, args=None, use_cuda=True, cuda_device=-1, **kwargs,
+            self, model_type, model_name, num_labels=None, weight=None, args=None, use_cuda=True, cuda_device=-1,
+            **kwargs,
     ):
 
         """
@@ -169,15 +162,15 @@ class ClassificationModel:
             self.args.wandb_project = None
 
     def train_model(
-        self,
-        train_df,
-        multi_label=False,
-        output_dir=None,
-        show_running_loss=True,
-        args=None,
-        eval_df=None,
-        verbose=True,
-        **kwargs,
+            self,
+            train_df,
+            multi_label=False,
+            output_dir=None,
+            show_running_loss=True,
+            args=None,
+            eval_df=None,
+            verbose=True,
+            **kwargs,
     ):
         """
         Trains the model using 'train_df'
@@ -274,14 +267,14 @@ class ClassificationModel:
             logger.info(" Training of {} model complete. Saved to {}.".format(self.args.model_type, output_dir))
 
     def train(
-        self,
-        train_dataloader,
-        output_dir,
-        multi_label=False,
-        show_running_loss=True,
-        eval_df=None,
-        verbose=True,
-        **kwargs,
+            self,
+            train_dataloader,
+            output_dir,
+            multi_label=False,
+            show_running_loss=True,
+            eval_df=None,
+            verbose=True,
+            **kwargs,
     ):
         """
         Trains the model on train_dataset.
@@ -391,7 +384,7 @@ class ClassificationModel:
                 global_step = int(checkpoint_suffix)
                 epochs_trained = global_step // (len(train_dataloader) // args.gradient_accumulation_steps)
                 steps_trained_in_current_epoch = global_step % (
-                    len(train_dataloader) // args.gradient_accumulation_steps
+                        len(train_dataloader) // args.gradient_accumulation_steps
                 )
 
                 logger.info("   Continuing training from checkpoint, will skip to saved global_step")
@@ -492,8 +485,8 @@ class ClassificationModel:
                         self._save_model(output_dir_current, optimizer, scheduler, model=model)
 
                     if args.evaluate_during_training and (
-                        args.evaluate_during_training_steps > 0
-                        and global_step % args.evaluate_during_training_steps == 0
+                            args.evaluate_during_training_steps > 0
+                            and global_step % args.evaluate_during_training_steps == 0
                     ):
                         # Only evaluate when single GPU otherwise metrics may not average well
                         results, _, _ = self.eval_model(
@@ -655,7 +648,7 @@ class ClassificationModel:
         return global_step, tr_loss / global_step
 
     def eval_model(
-        self, eval_df, multi_label=False, output_dir=None, verbose=True, silent=False, wandb_log=True, **kwargs
+            self, eval_df, multi_label=False, output_dir=None, verbose=True, silent=False, wandb_log=True, **kwargs
     ):
         """
         Evaluates the model on eval_df. Saves results to output_dir.
@@ -692,7 +685,8 @@ class ClassificationModel:
         return result, model_outputs, wrong_preds
 
     def evaluate(
-        self, eval_df, output_dir, multi_label=False, prefix="", verbose=True, silent=False, wandb_log=True, **kwargs
+            self, eval_df, output_dir, multi_label=False, prefix="", verbose=True, silent=False, wandb_log=True,
+            **kwargs
     ):
         """
         Evaluates the model on eval_df.
@@ -782,7 +776,7 @@ class ClassificationModel:
                 window_ranges.append([count, count + n_windows])
                 count += n_windows
 
-            preds = [preds[window_range[0] : window_range[1]] for window_range in window_ranges]
+            preds = [preds[window_range[0]: window_range[1]] for window_range in window_ranges]
             out_label_ids = [
                 out_label_ids[i] for i in range(len(out_label_ids)) if i in [window[0] for window in window_ranges]
             ]
@@ -839,7 +833,7 @@ class ClassificationModel:
         return results, model_outputs, wrong
 
     def load_and_cache_examples(
-        self, examples, evaluate=False, no_cache=False, multi_label=False, verbose=True, silent=False
+            self, examples, evaluate=False, no_cache=False, multi_label=False, verbose=True, silent=False
     ):
         """
         Converts a list of InputExample objects to a TensorDataset containing InputFeatures. Caches the InputFeatures.
@@ -872,8 +866,8 @@ class ClassificationModel:
         )
 
         if os.path.exists(cached_features_file) and (
-            (not args.reprocess_input_data and not no_cache)
-            or (mode == "dev" and args.use_cached_eval_features and not no_cache)
+                (not args.reprocess_input_data and not no_cache)
+                or (mode == "dev" and args.use_cached_eval_features and not no_cache)
         ):
             features = torch.load(cached_features_file)
             if verbose:
@@ -1104,7 +1098,7 @@ class ClassificationModel:
                 window_ranges.append([count, count + n_windows])
                 count += n_windows
 
-            preds = [preds[window_range[0] : window_range[1]] for window_range in window_ranges]
+            preds = [preds[window_range[0]: window_range[1]] for window_range in window_ranges]
 
             model_outputs = preds
 

@@ -26,7 +26,7 @@ def weighted_ensemble(predictions, weights):
         if weighted_avg == 0.5:
             final_predictions.append(1)
         else:
-            final_predictions.append(round(weighted_avg))
+            final_predictions.append(int(round(weighted_avg)))
     return final_predictions
 
 
@@ -46,6 +46,7 @@ def ensemble_results(folder_path, output_file_path, weights=None):
     # read model predictions
     for root, dirs, files in os.walk(folder_path):
         i = 0
+        files.sort()
         for file in files:
             result = pd.read_csv(os.path.join(folder_path, file), sep='\t')
             preds = encode(result['predictions'])
@@ -53,6 +54,7 @@ def ensemble_results(folder_path, output_file_path, weights=None):
             i += 1
 
     final_predictions = majority_class_ensemble(predictions)
+    # final_predictions = weighted_ensemble(predictions, weights)
 
     # decode final predictions
     final_predictions = decode(final_predictions)
@@ -66,4 +68,5 @@ def ensemble_results(folder_path, output_file_path, weights=None):
 if __name__ == "__main__":
     folder_path = "../results/ensemble/"
     output_file_path = "../results/ensemble/output.txt"
+    # weights = [0.2, 0.6, 0.2]
     ensemble_results(folder_path, output_file_path)
