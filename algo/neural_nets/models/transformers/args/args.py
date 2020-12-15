@@ -10,10 +10,10 @@ RESULT_FILE = "result.csv"
 SUBMISSION_FOLDER = "transformers"
 SUBMISSION_FILE = "predictions.txt"
 MODEL_TYPE = "bert"
-MODEL_NAME = "digitalepidemiologylab/covid-twitter-bert"
-LANGUAGE_FINETUNE = False
+MODEL_NAME = "bert-base-uncased"
+LANGUAGE_FINETUNE = True
 SEED = 777
-PREPROCESS_TYPE = "ct-bert"  # or "normal"
+PREPROCESS_TYPE = "normal" #"ct-bert" or "normal"
 PREPROCESS_WITH_NE = False
 
 N_CLASSES = 2
@@ -105,7 +105,7 @@ language_modeling_args = {
     'warmup_ratio': 0.06,
     'warmup_steps': 0,
     'max_grad_norm': 1.0,
-    'do_lower_case': False,
+    'do_lower_case': True,
 
     'logging_steps': 80,
     'save_steps': 80,

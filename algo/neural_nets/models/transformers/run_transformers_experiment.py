@@ -50,7 +50,7 @@ def print_results(results):
     print("Precision {}".format(results[PRECISION]))
 
 
-colnames = ['Id', 'Time', 'Text']
+colnames = ['Id', 'Time', 'Text', 'Hashtag', 'Location']
 train = pd.read_csv(TRAINING_DATA_PATH, sep='\t', names=colnames, header=None)
 # dev = pd.read_csv(VALIDATION_DATA_PATH, sep='\t')
 
